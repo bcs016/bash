@@ -1,3 +1,3 @@
 # README
 
-Several tools which helps me in my job.
+Several tools which are fun or help me in my daily work
