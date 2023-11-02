@@ -4,6 +4,7 @@
 # description: Shows DNS information of a domain, by finding its SOA and performing additional 
 #            : queries to the SOA
 # parameter  : domain name to query
+# requires   : nslookup, basename, grep, cut, tail
 
 if [ $# -eq 0 ]; then
 	echo ""
@@ -27,25 +28,20 @@ echo -e "      dns server : $dns"
 fi
 echo ""
 
-soaRec=`nslookup -querytype=soa  -timeout=10 $1 $2| grep origin | cut -d' ' -f 3`
+soaRec=`nslookup -querytype=soa   -timeout=10 $1 $2         | grep origin | cut -d' ' -f 3`
+aRec=`nslookup -querytype=a       -timeout=10 $1 $soaRec    | tail -2 | grep Address | cut -d' ' -f 2`
+# aaRec=`nslookup -querytype=a       -timeout=10 $1 $soaRec | tail -2 | grep Address | cut -d' ' -f 2`
+nsRec=`nslookup -querytype=ns      -timeout-10 $1 $soaRec   | grep nameserver | cut -d' ' -f 3`
+mxRec=`nslookup -querytype=mx      -timeout=10 $1 $soaRec   | grep mail | cut -d = -f 2,3`
+# txtRec=`nslookup -querytype=txt    -timeout=10 $1 $soaRec | grep text | cut -d = -f 2,3,4 | tr '\n' ' '| sed 's/\" \"//g' `
+txtRec=`nslookup -querytype=txt    -timeout=10 $1 $soaRec   | grep text | cut -d = -f 2,3,4 | sed 's/\" \"//g' `
+
 echo "SOA       $soaRec"
-
-aRec=`nslookup -querytype=a      -timeout=10 $1 $soaRec | tail -2 | grep Address | cut -d' ' -f 2`
 while read -r line; do echo "A         $line"; done <<< "$aRec"
-
-# aaRec=`nslookup -querytype=a     -timeout=10 $1 $soaRec | tail -2 | grep Address | cut -d' ' -f 2`
 # while read -r line; do echo "AAAA      $line"; done <<< "$aaRec"
-
-nsRec=`nslookup -querytype=ns    -timeout-10 $1 $soaRec | grep nameserver | cut -d' ' -f 3`
 while read -r line; do echo "NS        $line"; done <<< "$nsRec"
-
-mxRec=`nslookup -querytype=mx    -timeout=10 $1 $soaRec | grep mail | cut -d = -f 2,3`
 while read -r line; do echo "MX        $line"; done <<< "$mxRec"
-
-#txtRec=`nslookup -querytype=txt  -timeout=10 $1 $soaRec | grep text | cut -d = -f 2,3,4 | tr '\n' ' '| sed 's/\" \"//g' `
-txtRec=`nslookup -querytype=txt  -timeout=10 $1 $soaRec | grep text | cut -d = -f 2,3,4 | sed 's/\" \"//g' `
 #echo "TXT       $txtRec"
-
 while read -r line; do echo "TXT       $line"; done <<< "$txtRec"
 
 
