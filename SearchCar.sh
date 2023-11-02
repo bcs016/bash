@@ -4,7 +4,7 @@
 # Purpose   : provide basic info based on a license plate
 # 
 # requires  : internet connection
-#           : basename, dirname, sed, tr, curl
+#           : basename, dirname, sed, tr, curl, bc
 #           : jq (Jason Query)
 #######################################################################################################################
 
@@ -94,7 +94,7 @@ apk=`jq ".[0].vervaldatum_apk" "$tmpFile1" | sed 's/\"//g'`
 kleur=`jq ".[0].eerste_kleur" "$tmpFile1" | sed 's/\"//g'`
 tenaamstelling=`jq ".[0].datum_tenaamstelling" "$tmpFile1" | sed 's/\"//g'`
 cilinders=`jq ".[0].aantal_cilinders" "$tmpFile1" | sed 's/\"//g'`
-power=`jq ".[0].nettomaximumvermogen" "$tmpFile2" | sed 's/\"//g' | sed 's/\.00//g'`
+power=`jq ".[1].nettomaximumvermogen" "$tmpFile2" | sed 's/\"//g' | sed 's/\.00//g'`
 brandstof=`jq ".[0].brandstof_omschrijving" "$tmpFile2" | sed 's/\"//g'`
 voertuigsoort=`jq ".[0].voertuigsoort" "$tmpFile1" | sed 's/\"//g'`
 # calculate HP from kW
