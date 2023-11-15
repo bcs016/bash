@@ -1,5 +1,5 @@
 #!/bin/bash
-# purpose  : Restun vendor name based on a given hardware mac address
+# purpose  : Return vendor name based on a given hardware mac address
 # requires : curl, jq
 
 if [ $# -eq 0 ]; then
@@ -17,8 +17,13 @@ url='https://api.macvendors.com/'$search
 
 result=$(curl --no-progress-meter $url)
 
-vendor=$(echo $result | jq '. [] | .detail')
-
 echo ""
-echo "Vendor is:" $vendor
+
+if [[ "$result" == *"{"* ]]; then 
+    vendor=$(echo $result | jq '. [] | .detail')
+    echo "Vendor is:" $vendor
+else 
+    echo Vendor is: $result 
+fi
+
 echo ""
