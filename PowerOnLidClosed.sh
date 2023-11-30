@@ -1,7 +1,7 @@
 #/bin/bash
 # purpose : enable or disable power on after opening lid
 # date    : 28-11-2023
-# requires: macOS
+# requires: macOS, Intel. Does not work on M1/2/3
 
 if [ $(uname -s) != 'Darwin' ]; then
     # Not macOS
@@ -9,6 +9,14 @@ if [ $(uname -s) != 'Darwin' ]; then
     echo "This script is meant for a macOS system."
     echo ""
     exit 2
+else
+    if [ $(uname -m) != 'x86_64' ]; then
+        # Not macOS Intel
+        echo ""
+        echo "This script is meant for a Intel macOS system."
+        echo ""
+        exit 2
+    fi
 fi
 
 if [ $# -eq 0 ]; then
