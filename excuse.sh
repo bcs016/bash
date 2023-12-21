@@ -2,6 +2,7 @@
 # Purpose : Random excuse generator
 # Requires: excuses.txt needs to be in same folder as this script
 
+
 SOURCE=${BASH_SOURCE[0]}
 while [ -L "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
   TARGET=$(readlink "$SOURCE")
