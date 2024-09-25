@@ -1,6 +1,6 @@
 #!/bin/bash
 # Purpose     : Generate a new keypair with random password and generate pwpush url's for sharing
-# Author      : mike.beijerbacht@gmail.com
+# Author      : Mike Beijerbacht
 # requirements: openssl
 #             : jq
 #             : sed
