@@ -33,8 +33,7 @@ aRec=`nslookup -querytype=a        -timeout=10 $1 $soaRec   | tail -2 | grep -i 
 aaRec=`nslookup -querytype=aaaa    -timeout=10 $1 $soaRec   | tail -2 | grep -i Address | cut -d' ' -f 4`
 nsRec=`nslookup -querytype=ns      -timeout-10 $1 $soaRec   | grep nameserver | cut -d' ' -f 3`
 mxRec=`nslookup -querytype=mx      -timeout=10 $1 $soaRec   | grep mail | cut -d = -f 2,3`
-# txtRec=`nslookup -querytype=txt    -timeout=10 $1 $soaRec   | grep text | cut -d = -f 2,3,4 | tr '\n' ' '| sed 's/\" \"//g' `
-txtRec=`nslookup -querytype=txt    -timeout=10 $1 $soaRec   | grep text | cut -d = -f 2,3,4 | sed 's/\" \"//g' `
+txtRec=`nslookup -querytype=txt    -timeout=10 $1 $soaRec   | grep text | cut -d\" -f 2 `
 
 echo "SOA       $soaRec"
 while read -r line; do echo "A         $line"; done <<< "$aRec"
